@@ -7,13 +7,20 @@
 
 import UIKit
 
+// MARK: - OnboardingView
 final class OnboardingView: UIView {
+    
+    // UIConstants
+    struct UIConstants {
+        static let fontSize: CGFloat = 18
+    }
 
+    // MARK: UIProperties
     private let eventsLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.attributedText = NSAttributedString(string: NSLocalizedString("onboarding.events",
-                                                                            comment: ""), attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .semibold), .foregroundColor: UIColor.white])
+                                                                            comment: ""), attributes: [.font: UIFont.systemFont(ofSize: UIConstants.fontSize, weight: .regular), .foregroundColor: UIColor.white])
         return label
     }()
 
@@ -21,7 +28,7 @@ final class OnboardingView: UIView {
         let label = UILabel()
         label.numberOfLines = 0
         label.attributedText = NSAttributedString(string: NSLocalizedString("onboarding.places",
-                                                                            comment: ""), attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .semibold), .foregroundColor: UIColor.white])
+                                                                            comment: ""), attributes: [.font: UIFont.systemFont(ofSize: UIConstants.fontSize, weight: .regular), .foregroundColor: UIColor.white])
         return label
     }()
 
@@ -29,10 +36,11 @@ final class OnboardingView: UIView {
         let label = UILabel()
         label.numberOfLines = 0
         label.attributedText = NSAttributedString(string: NSLocalizedString("onboarding.gallery",
-                                                                            comment: ""), attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .semibold), .foregroundColor: UIColor.white])
+                                                                            comment: ""), attributes: [.font: UIFont.systemFont(ofSize: UIConstants.fontSize, weight: .regular), .foregroundColor: UIColor.white])
         return label
     }()
 
+    // MARK: Init
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -43,8 +51,9 @@ final class OnboardingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: Private Methods
     private func initialize() {
-        backgroundColor = UIColor(white: 0, alpha: 0.5)
+        backgroundColor = UIColor(white: 0, alpha: 0.75)
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         addGestureRecognizer(tap)
@@ -70,7 +79,7 @@ final class OnboardingView: UIView {
         }, completion: nil)
     }
 
-    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+    @objc private func handleTap(_ sender: UITapGestureRecognizer? = nil) {
         removeFromSuperview()
     }
 }

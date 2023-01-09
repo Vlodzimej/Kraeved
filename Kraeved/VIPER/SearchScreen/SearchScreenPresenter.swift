@@ -10,7 +10,7 @@ protocol SearchScreenPresenterProtocol: AnyObject {
 }
 
 // MARK: - SearchScreenPresenter
-class SearchScreenPresenter: NSObject, SearchScreenPresenterProtocol {
+final class SearchScreenPresenter: NSObject, SearchScreenPresenterProtocol {
 
     // MARK: Properties
     weak var view: SearchScreenViewProtocol?

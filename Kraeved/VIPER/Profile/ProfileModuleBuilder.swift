@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ProfileModuleBuilder {
+final class ProfileModuleBuilder {
 	static func build() -> ProfileViewController {
 		let interactor = ProfileInteractor()
 		let router = ProfileRouter()

@@ -6,7 +6,7 @@ protocol AnnotationScreenPresenterProtocol: AnyObject {
 }
 
 // MARK: - AnnotationScreenPresenter
-class AnnotationScreenPresenter: AnnotationScreenPresenterProtocol {
+final class AnnotationScreenPresenter: AnnotationScreenPresenterProtocol {
 
     // MARK: Properties
     weak var view: AnnotationScreenViewProtocol?

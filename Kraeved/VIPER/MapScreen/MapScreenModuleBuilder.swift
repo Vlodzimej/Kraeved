@@ -1,6 +1,6 @@
 import UIKit
 
-class MapScreenModuleBuilder {
+final class MapScreenModuleBuilder {
     static func build() -> UIViewController {
         let interactor = MapScreenInteractor()
         let router = MapScreenRouter()

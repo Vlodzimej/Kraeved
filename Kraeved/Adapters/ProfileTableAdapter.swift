@@ -7,6 +7,7 @@
 
 import UIKit
 
+// MARK: - ProfileCellType
 enum ProfileCellType {
     case textField
     case button
@@ -26,7 +27,7 @@ protocol ProfileTableAdapterDelegate: AnyObject {
 }
 
 // MARK: - ProfileTableAdapter
-class ProfileTableAdapter: NSObject {
+final class ProfileTableAdapter: NSObject {
 
     // MARK: Properties
     private var tableView: UITableView?
@@ -42,11 +43,11 @@ class ProfileTableAdapter: NSObject {
         }
 
         let result: [ProfileCellViewModel] = [
-            .init(title: "Имя", value: user.username ?? "", type: .textField, action: nil),
-            .init(title: "Email", value: user.email ?? "", type: .textField, action: nil),
-            .init(title: "Телефон", value: phoneNumber, type: .textField, action: nil),
-            .init(title: "Баллы", value: String(user.score ?? 0), type: .textField, action: nil),
-            .init(title: "Выйти из аккаунта", value: nil, type: .button, action: { [weak self] in
+            .init(title: NSLocalizedString("profile.name", comment: ""), value: user.username ?? "", type: .textField, action: nil),
+            .init(title: NSLocalizedString("profile.email", comment: ""), value: user.email ?? "", type: .textField, action: nil),
+            .init(title: NSLocalizedString("profile.phone", comment: ""), value: phoneNumber, type: .textField, action: nil),
+            .init(title: NSLocalizedString("profile.score", comment: ""), value: String(user.score ?? 0), type: .textField, action: nil),
+            .init(title: NSLocalizedString("profile.logout", comment: ""), value: nil, type: .button, action: { [weak self] in
                 guard let self else { return }
                 self.delegate?.logout()
             })

@@ -8,7 +8,7 @@
 import UIKit
 
 // MARK: - MainTableCellViewFactory
-class MainTableCellViewFactory {
+final class MainTableCellViewFactory {
 
     func makeHistoricalEventCellView(items: [MainTableCellItem], delegate: EntityCellDelegate?) -> UIView {
         let cellView = EntityCellView(items: items, type: EntityType.historicalEvent)

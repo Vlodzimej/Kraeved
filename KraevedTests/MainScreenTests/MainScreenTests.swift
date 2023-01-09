@@ -33,7 +33,7 @@ final class MainScreenTests: XCTestCase {
         guard let router = router else { return }
         presenter.showEntityDetails(id: UUID())
 
-        if !router.isOpenedEntityDetails {
+        if !router.isEntityDetailsOpened {
             XCTFail("openEntityDetails func not called")
         }
     }

@@ -13,7 +13,7 @@ protocol StartScreenInteractorProtocol: AnyObject {
 }
 
 // MARK: - StartScreenInteractor
-class StartScreenInteractor: StartScreenInteractorProtocol {
+final class StartScreenInteractor: StartScreenInteractorProtocol {
 
     private let authManager: AuthManagerProtocol
     // MARK: Properties

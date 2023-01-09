@@ -1,11 +1,6 @@
-// Adapted from Stack Overflow answer by David Crow http://stackoverflow.com/a/43235
-// Question: Algorithm to randomly generate an aesthetically-pleasing color palette by Brian Gianforcaro
-// Method randomly generates a pastel color, and optionally mixes it with another color
-
 import UIKit
 
 func generateRandomPastelColor(withMixedColor mixColor: UIColor?) -> UIColor {
-    // Randomly generate number in closure
     let randomColorGenerator = { () -> CGFloat in
         CGFloat(UInt32.random(in: 0...16355) % 256) / 256
     }
@@ -14,7 +9,6 @@ func generateRandomPastelColor(withMixedColor mixColor: UIColor?) -> UIColor {
     var green: CGFloat = randomColorGenerator()
     var blue: CGFloat = randomColorGenerator()
 
-    // Mix the color
     if let mixColor = mixColor {
         var mixRed: CGFloat = 0, mixGreen: CGFloat = 0, mixBlue: CGFloat = 0
         mixColor.getRed(&mixRed, green: &mixGreen, blue: &mixBlue, alpha: nil)

@@ -8,21 +8,19 @@
 import UIKit
 
 // MARK: - ProfileTableViewCell
-class ProfileTableViewCell: UITableViewCell {
-
-    // MARK: Properties
-    private var action: (() -> Void)?
+final class ProfileTableViewCell: UITableViewCell {
     
     // MARK: UIConstants
     struct UIConstatns {
         static let cellHeight: CGFloat = 64
         static let contentInset: CGFloat = 16
+        static let labelFontSize: CGFloat = 16
     }
 
     // MARK: UIProperties
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: UIConstatns.labelFontSize, weight: .medium)
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -30,7 +28,7 @@ class ProfileTableViewCell: UITableViewCell {
 
     private let valueLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: UIConstatns.labelFontSize, weight: .regular)
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -42,6 +40,10 @@ class ProfileTableViewCell: UITableViewCell {
         return button
     }()
     
+    // MARK: Properties
+    private var action: (() -> Void)?
+    
+    // MARK: Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         initialize()
@@ -64,10 +66,14 @@ class ProfileTableViewCell: UITableViewCell {
         contentView.addSubview(actionButton)
         actionButton.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: UIConstatns.contentInset).isActive = true
         actionButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        actionButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        actionButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight).isActive = true
         actionButton.widthAnchor.constraint(equalToConstant: contentView.frame.width / 2).isActive = true
     }
-
+    
+    @objc private func actionButtonTapped() {
+        action?()
+    }
+    
     // MARK: Public Methods
     func configurate(viewModel: ProfileCellViewModel) {
         backgroundColor = .clear
@@ -82,16 +88,11 @@ class ProfileTableViewCell: UITableViewCell {
         case .button:
             titleLabel.isHidden = true
             valueLabel.isHidden = true
-            actionButton.setTitle("Выйти из аккаунта", for: .normal)
+            actionButton.setTitle(NSLocalizedString("profile.logout", comment: ""), for: .normal)
             actionButton.setTitleColor(.red, for: .normal)
             actionButton.isHidden = false
             action = viewModel.action
             actionButton.addTarget(self, action: #selector(actionButtonTapped), for: .touchUpInside)
         }
     }
-    
-    @objc func actionButtonTapped() {
-        action?()
-    }
-    
 }

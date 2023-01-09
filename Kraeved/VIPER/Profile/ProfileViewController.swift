@@ -16,7 +16,7 @@ protocol ProfileViewProtocol: AnyObject {
 }
 
 // MARK: - ProfileViewController
-class ProfileViewController: BaseViewController, ProfileViewProtocol {
+final class ProfileViewController: BaseViewController, ProfileViewProtocol {
 
     // MARK: Properties
     private let presenter: ProfilePresenterProtocol
@@ -34,9 +34,9 @@ class ProfileViewController: BaseViewController, ProfileViewProtocol {
     
     private lazy var loginButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Выполните вход", for: .normal)
-        button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 8
+        button.setTitle(NSLocalizedString("profile.signIn", comment: ""), for: .normal)
+        button.backgroundColor = .Common.blueButton
+        button.layer.cornerRadius = Constants.buttonRadius
         button.layer.masksToBounds = true
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
@@ -71,17 +71,17 @@ class ProfileViewController: BaseViewController, ProfileViewProtocol {
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         
         view.addSubview(loginButton)
+        loginButton.widthAnchor.constraint(equalToConstant: 128).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        loginButton.widthAnchor.constraint(equalToConstant: view.frame.width / 2).isActive = true
-        loginButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        loginButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight).isActive = true
+    }
+    
+    @objc private func loginButtonTapped() {
+        presenter.openStartScreen()
     }
 
     // MARK: Public methods
-    @objc func loginButtonTapped() {
-        presenter.openStartScreen()
-    }
-    
     func showUserData() {
         tableView.isHidden = false
         loginButton.isHidden = true

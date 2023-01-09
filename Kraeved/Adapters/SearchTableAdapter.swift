@@ -13,14 +13,14 @@ protocol SearchTableAdapterDelegate: AnyObject {
 }
 
 // MARK: - SearchTableAdapter
-class SearchTableAdapter: NSObject {
+final class SearchTableAdapter: NSObject {
 
+    // MARK: Properties
     private var items: [SearchItem] = []
-
     private var tableView: UITableView?
-
     weak var delegate: SearchTableAdapterDelegate?
 
+    // MARK: Public Methods
     func setup(for tableView: UITableView) {
         tableView.delegate = self
         tableView.dataSource = self
@@ -35,6 +35,7 @@ class SearchTableAdapter: NSObject {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension SearchTableAdapter: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = items[indexPath.item]
@@ -42,6 +43,7 @@ extension SearchTableAdapter: UITableViewDelegate {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension SearchTableAdapter: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         items.count

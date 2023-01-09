@@ -15,7 +15,7 @@ protocol SearchScreenInteractorProtocol: AnyObject {
 }
 
 // MARK: - SearchScreenInteractor
-class SearchScreenInteractor: SearchScreenInteractorProtocol {
+final class SearchScreenInteractor: SearchScreenInteractorProtocol {
 
     // MARK: Properties
     weak var presenter: SearchScreenPresenterProtocol?

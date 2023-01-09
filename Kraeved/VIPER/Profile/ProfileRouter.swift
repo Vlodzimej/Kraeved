@@ -11,6 +11,6 @@ protocol ProfileRouterProtocol: BaseRouterProtocol {
 
 }
 
-class ProfileRouter: BaseRouter<ProfileViewController>, ProfileRouterProtocol {
+final class ProfileRouter: BaseRouter<ProfileViewController>, ProfileRouterProtocol {
 
 }

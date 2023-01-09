@@ -11,6 +11,6 @@ protocol EntityDetailsRouterProtocol: BaseRouterProtocol {
 
 }
 
-class EntityDetailsRouter: BaseRouter<EntityDetailsViewController>, EntityDetailsRouterProtocol {
+final class EntityDetailsRouter: BaseRouter<EntityDetailsViewController>, EntityDetailsRouterProtocol {
 
 }

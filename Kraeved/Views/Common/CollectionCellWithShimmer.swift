@@ -7,6 +7,7 @@
 
 import UIKit
 
+// MARK: - CollectionCellWithShimmer
 class CollectionCellWithShimmer: UICollectionViewCell {
 
     private let gradientColorOne = UIColor.MainScreen.shimmerColorFirst.cgColor

@@ -13,15 +13,23 @@ protocol EntityDetailsViewProtocol: AnyObject {
 }
 
 // MARK: - EntityDetailsViewController
-class EntityDetailsViewController: BaseViewController, EntityDetailsViewProtocol {
+final class EntityDetailsViewController: BaseViewController, EntityDetailsViewProtocol {
 
+    // MARK: UIConstants
+    struct UIConstants {
+        static let titleLabelFontSize: CGFloat = 24
+        static let titleLabelTopOffset: CGFloat = 128
+        static let textLabelTopOffset: CGFloat = 64
+        static let descriptionLabelFontSize: CGFloat = 14
+    }
+    
     // MARK: Properties
     private let presenter: EntityDetailsPresenterProtocol
 
     // MARK: UIProperties
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: UIConstants.titleLabelFontSize, weight: .semibold)
         label.numberOfLines = 2
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -29,11 +37,12 @@ class EntityDetailsViewController: BaseViewController, EntityDetailsViewProtocol
         return label
     }()
 
-    private let textLabel: UILabel = {
+    private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: UIConstants.descriptionLabelFontSize, weight: .regular)
         label.numberOfLines = 0
         label.textAlignment = .justified
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         return label
     }()
@@ -75,14 +84,14 @@ class EntityDetailsViewController: BaseViewController, EntityDetailsViewProtocol
 
         view.addSubview(titleLabel)
 
-        titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 128).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: UIConstants.titleLabelTopOffset).isActive = true
         titleLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
 
-        view.addSubview(textLabel)
+        view.addSubview(descriptionLabel)
 
-        textLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 64).isActive = true
-        textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        textLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        descriptionLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: UIConstants.textLabelTopOffset).isActive = true
+        descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.contentInset).isActive = true
+        descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.contentInset).isActive = true
     }
 
     // MARK: Private methods
@@ -99,7 +108,7 @@ class EntityDetailsViewController: BaseViewController, EntityDetailsViewProtocol
     // MARK: Public methods
     func update(entity: MetaObject<Entity>) {
         titleLabel.text = entity.title
-        textLabel.text = entity.data?.text
+        descriptionLabel.text = entity.data?.text
         if let image = entity.image {
             addImage(image: image)
         }

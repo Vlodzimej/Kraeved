@@ -13,7 +13,7 @@ protocol EntityDetailsInteractorProtocol: AnyObject {
 }
 
 // MARK: - EntityDetailsInteractor
-class EntityDetailsInteractor: EntityDetailsInteractorProtocol {
+final class EntityDetailsInteractor: EntityDetailsInteractorProtocol {
 
     // MARK: Properties
     weak var presenter: EntityDetailsPresenterProtocol?

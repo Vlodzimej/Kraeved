@@ -4,7 +4,9 @@ protocol BaseRouterProtocol {
     func openAnnotation(annotation: Annotation)
     func openEntityDetails(id: UUID)
     func openStartScreen(output: StartScreenModuleOutput?)
-    func showMessage(_ message: String)
+    func showAlertMessage(_ message: String)
+    func showMessageScreen(_ message: String)
+    func dismiss()
 }
 
 class BaseRouter<T>: BaseRouterProtocol where T: UIViewController {
@@ -27,9 +29,18 @@ class BaseRouter<T>: BaseRouterProtocol where T: UIViewController {
         viewController?.navigationController?.present(startScreenViewController, animated: true)
     }
     
-    func showMessage(_ message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("common.close", comment: ""), style: .default))
-        viewController?.present(alert, animated: true)
+    func showAlertMessage(_ message: String) {
+        let alertViewController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alertViewController.addAction(UIAlertAction(title: NSLocalizedString("common.close", comment: ""), style: .default))
+        viewController?.present(alertViewController, animated: true)
+    }
+    
+    func showMessageScreen(_ message: String) {
+        let messageViewController = MessageScreenModuleBuilder.build(messageText: message)
+        viewController?.present(messageViewController, animated: true)
+    }
+    
+    func dismiss() {
+        viewController?.dismiss(animated: true)
     }
 }

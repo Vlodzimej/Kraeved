@@ -8,7 +8,7 @@
 import Foundation
 import MapKit
 
-class Annotation: NSObject, MKAnnotation {
+final class Annotation: NSObject, MKAnnotation {
 
     var id: UUID
 

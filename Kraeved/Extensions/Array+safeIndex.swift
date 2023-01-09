@@ -8,7 +8,7 @@
 import Foundation
 
 extension Array {
-    public subscript (safeIndex index: Index) -> Element? {
+    public subscript(safeIndex index: Index) -> Element? {
         indices.contains(index) ? self[index] : nil
     }
 }

@@ -15,6 +15,7 @@ final class ActivityIndicatorView: UIView {
         static let size: CGFloat = 64
     }
 
+    // MARK: UIProperties
     private let mainView: UIView = {
         let view = UIView()
         return view
@@ -29,6 +30,7 @@ final class ActivityIndicatorView: UIView {
         return layer
     }()
 
+    // MARK: Init
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
@@ -40,7 +42,8 @@ final class ActivityIndicatorView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func initialize() {
+    // MARK: Private Methods
+    private func initialize() {
         squareLayer.frame = CGRect(x: 0, y: 0, width: UIConstants.size, height: UIConstants.size)
 
         let rotationAnimation: CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")

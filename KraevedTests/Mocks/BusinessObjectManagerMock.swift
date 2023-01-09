@@ -9,7 +9,6 @@ import Foundation
 @testable import Kraeved
 
 class BusinessObjectManagerMock: BusinessObjectManagerProtocol {
-
     let uuids: [UUID] = [
         UUID(uuidString: "21af1cad-7a20-427a-a9c7-c4bafcfffc79") ?? UUID(),
         UUID(uuidString: "b54abb07-910d-4ab6-afb4-968408e32208") ?? UUID(),
@@ -25,9 +24,13 @@ class BusinessObjectManagerMock: BusinessObjectManagerProtocol {
     func get(metaTypeId: UUID, completion: @escaping ([Kraeved.BusinessObject]) -> Void) {
         completion(businessObjects)
     }
-
+    
     func find(metaTypeId: UUID, predicates: [NSPredicate], completion: @escaping ([Kraeved.BusinessObject]) -> Void) {
         let result = businessObjects.filter { $0.metaTypeId == metaTypeId }
         completion(result)
+    }
+    
+    func add(_ businessObject: Kraeved.BusinessObject, completion: @escaping (Kraeved.BusinessObject) -> Void) {
+        completion(businessObject)
     }
 }

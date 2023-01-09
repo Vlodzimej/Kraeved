@@ -1,6 +1,6 @@
 import UIKit
 
-class MainScreenModuleBuilder {
+final class MainScreenModuleBuilder {
     static func build() -> UIViewController {
         let interactor = MainScreenInteractor()
         let router = MainScreenRouter()

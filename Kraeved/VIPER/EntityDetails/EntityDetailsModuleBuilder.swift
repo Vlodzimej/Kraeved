@@ -7,7 +7,7 @@
 
 import Foundation
 
-class EntityDetailsModuleBuilder {
+final class EntityDetailsModuleBuilder {
     static func build(id: UUID) -> EntityDetailsViewController {
 		let interactor = EntityDetailsInteractor()
 		let router = EntityDetailsRouter()

@@ -29,6 +29,7 @@ extension UIColor {
         static var greenAlphaBackground: UIColor { UIColor.HEX.hE8F4EADD }
         static var greenMain: UIColor { UIColor.HEX.h479F88 }
         static var blueMain: UIColor { UIColor.HEX.hA7C7E7 }
+        static var blueButton: UIColor { UIColor.HEX.h537BC3 }
     }
     
     struct StartScreen {
@@ -51,6 +52,13 @@ extension UIColor {
     struct TabBar {
         static var tabBarItem: UIColor { UIColor.HEX.h677F79 }
     }
+    
+    struct MiniApps {
+        static var notes: UIColor { UIColor.HEX.hF5E9DF }
+        static var genealogy: UIColor { UIColor.HEX.h95DCD0 }
+        static var shelter: UIColor { UIColor.HEX.hDBC9A8 }
+        static var education: UIColor { UIColor.HEX.hE2AEA2 }
+    }
 }
 
 extension UIColor {
@@ -65,6 +73,11 @@ extension UIColor {
         static let hE8F4EA = UIColor(hex: 0xE8F4EA)
         static let hE2EDE7 = UIColor(hex: 0xE2EDE7)
         static let hA7C7E7 = UIColor(hex: 0xA7C7E7)
+        static let hF5E9DF = UIColor(hex: 0xF5E9DF)
+        static let hE2AEA2 = UIColor(hex: 0xE2AEA2)
+        static let h95DCD0 = UIColor(hex: 0x95DCD0)
+        static let hDBC9A8 = UIColor(hex: 0xDBC9A8)
+        static let h537BC3 = UIColor(hex: 0x537BC3)
 
         static let hE8F4EADD = UIColor(hexWithAlpha: 0xE8F4EADD)
     }

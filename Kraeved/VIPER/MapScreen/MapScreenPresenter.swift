@@ -6,12 +6,11 @@ protocol MapScreenModuleOutput: AnyObject {
 }
 
 // MARK: - MapScreenPresenterProtocol
-protocol MapScreenPresenterProtocol: AnyObject, MKMapViewDelegate, AnnotationAddingViewDelegate, StartScreenModuleOutput {
+protocol MapScreenPresenterProtocol: AnyObject, MKMapViewDelegate, AnnotationInfoDelegate, AnnotationAddingViewDelegate, StartScreenModuleOutput {
     var mode: MapScreenMode { get set }
     var hasAuthorization: Bool { get }
 
     func viewDidLoad()
-    func openAnnotation(annotation: Annotation)
     func addAnnotations(annotations: [Annotation])
     func createAnnotation(by location: CGPoint)
     func removeNewAnnotation()
@@ -26,7 +25,7 @@ enum MapScreenMode {
 }
 
 // MARK: - MapScreenPresenter
-class MapScreenPresenter: NSObject, MapScreenPresenterProtocol {
+final class MapScreenPresenter: NSObject, MapScreenPresenterProtocol {
 
     // MARK: Constants
     private struct Constants {
@@ -57,7 +56,6 @@ class MapScreenPresenter: NSObject, MapScreenPresenterProtocol {
     func viewDidLoad() {
         guard let view = view else { return }
 
-        locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
@@ -75,7 +73,7 @@ class MapScreenPresenter: NSObject, MapScreenPresenterProtocol {
         view?.mapView.addAnnotations(annotations)
     }
 
-    func openAnnotation(annotation: Annotation) {
+    private func openAnnotation(annotation: Annotation) {
         interactor.getEntity(id: annotation.id) { [weak self] entity in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -155,10 +153,7 @@ extension MapScreenPresenter: MKMapViewDelegate {
     }
 }
 
-extension MapScreenPresenter: CLLocationManagerDelegate {
-
-}
-
+// MARK: - AnnotationAddingViewDelegate
 extension MapScreenPresenter: AnnotationAddingViewDelegate {
     func addAnnotation(title: String, description: String) {
         guard let coordinate = selectedAnnotation?.coordinate else { return }
@@ -172,13 +167,20 @@ extension MapScreenPresenter: AnnotationAddingViewDelegate {
                 if let title = result.title {
                     let localizedString = NSLocalizedString("mapScreen.locationAdded", comment: "")
                     let message = String(format: localizedString, title)
-                    self.router.showMessage(message)
+                    self.router.showAlertMessage(message)
                 }
             }
         }
     }
 }
+// MARK: - AnnotationInfoDelegate
+extension MapScreenPresenter: AnnotationInfoDelegate {
+    func openEntityDetails(id: UUID) {
+        router.openEntityDetails(id: id)
+    }
+}
 
+// MARK: - StartScreenModuleOutput
 extension MapScreenPresenter: StartScreenModuleOutput {
     func logged() {
         view?.showBottomPanel()

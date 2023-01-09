@@ -8,6 +8,9 @@
 "common.noTitle"                        = "No title";
 "common.next"                           = "Next";
 "common.close"                          = "Close";
+"common.signIn"                         = "Sign in";
+"common.cancel"                         = "Cancel";
+"common.more"                           = "More";
 
 "tabbar.mainScreen"                     = "Main";
 "tabbar.searchScreen"                   = "Search";
@@ -34,3 +37,23 @@
 "mapScreen.enterNewLocationName"        = "The name of the new location must match the object that\nis in flight on the coordinate map.\nThe name must be at least 3 characters long.";
 "mapScreen.enterNewLocationDescription" = "Enter a description for the location (optional).";
 "mapScreen.locationAdded"               = "Location \"%@\" successfully added!";
+"mapScreen.needSignIn"                  = "To add new locations, you must log in or register!";
+
+"profile.name"                          = "Name";
+"profile.email"                         = "Email";
+"profile.phone"                         = "Phone";
+"profile.score"                         = "Score";
+"profile.logout"                        = "Logout";
+"profile.signIn"                        = "Sign in";
+"profile.enterPhone"                    = "Enter your phone number";
+
+"miniapps.notes"                       = "Notes";
+"miniapps.genealogy"                   = "Genealogy";
+"miniapps.shelter"                     = "Shelter";
+"miniapps.education"                   = "Education";
+"miniapps.blank"                       = "Service is under development";
+
+"annotation.location"                  = "Location";
+"annotation.nature"                    = "Nature object";
+"annotation.building"                  = "Building";
+"annotation.note"                      = "Note";"

@@ -28,11 +28,12 @@ struct MainTableCellItem {
     let hasOverlay: Bool
 }
 
+// MARK: - MainTableAdapterDelegate
 protocol MainTableAdapterDelegate: AnyObject {
     func showEntityDetails(id: UUID)
 }
 
-class MainTableAdapter: NSObject {
+final class MainTableAdapter: NSObject {
 
     var sections: [MainTableSectionItem] = [
         MainTableSectionItem(title: NSLocalizedString("mainScreen.historicalEvents", comment: ""), type: EntityType.historicalEvent, hasOverlay: true),
@@ -63,10 +64,12 @@ class MainTableAdapter: NSObject {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension MainTableAdapter: UITableViewDelegate {
 
 }
 
+// MARK: - UITableViewDataSource
 extension MainTableAdapter: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -107,6 +110,7 @@ extension MainTableAdapter: UITableViewDataSource {
     }
 }
 
+// MARK: - MainTableCellDelegate
 extension MainTableAdapter: MainTableCellDelegate {
     func showEntityDetails(id: UUID) {
         delegate?.showEntityDetails(id: id)

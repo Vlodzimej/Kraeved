@@ -4,6 +4,6 @@ protocol MapScreenRouterProtocol: BaseRouterProtocol {
 
 }
 
-class MapScreenRouter: BaseRouter<MapScreenViewController>, MapScreenRouterProtocol {
+final class MapScreenRouter: BaseRouter<MapScreenViewController>, MapScreenRouterProtocol {
 
 }

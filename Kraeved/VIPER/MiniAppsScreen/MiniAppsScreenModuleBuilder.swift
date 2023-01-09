@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MiniAppsScreenModuleBuilder {
+final class MiniAppsScreenModuleBuilder {
 	static func build() -> MiniAppsScreenViewController {
 		let interactor = MiniAppsScreenInteractor()
 		let router = MiniAppsScreenRouter()

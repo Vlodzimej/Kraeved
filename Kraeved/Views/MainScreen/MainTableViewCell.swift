@@ -13,12 +13,13 @@ protocol MainTableCellDelegate: AnyObject {
 }
 
 // MARK: - MainTableCell
-class MainTableViewCell: UITableViewCell {
+final class MainTableViewCell: UITableViewCell {
 
-    // MARK: - UIConstants
+    // MARK: UIConstants
     struct UIConstants {
         static let headerTitleHeight: CGFloat = 32
         static let cellHeight: CGFloat = 200
+        static let titleLabelFontSize: CGFloat = 20
     }
 
     // MARK: - Properties
@@ -47,7 +48,7 @@ class MainTableViewCell: UITableViewCell {
         }
 
         if let titleText = titleText {
-            titleLabel.attributedText = NSAttributedString(string: titleText, attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .semibold), .foregroundColor: UIColor.black])
+            titleLabel.attributedText = NSAttributedString(string: titleText, attributes: [.font: UIFont.systemFont(ofSize: UIConstants.titleLabelFontSize, weight: .semibold), .foregroundColor: UIColor.black])
             titleLabel.frame = CGRect(x: Constants.contentInset, y: 0, width: self.bounds.width, height: UIConstants.headerTitleHeight)
             contentView.addSubview(titleLabel)
             hasHeader = true
@@ -63,6 +64,7 @@ class MainTableViewCell: UITableViewCell {
     }
 }
 
+// MARK: - MainTableViewCell
 extension MainTableViewCell: EntityCellDelegate {
     func showDetails(id: UUID) {
         delegate?.showEntityDetails(id: id)

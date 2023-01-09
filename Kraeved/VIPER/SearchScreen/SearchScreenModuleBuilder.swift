@@ -1,6 +1,6 @@
 import UIKit
 
-class SearchScreenModuleBuilder {
+final class SearchScreenModuleBuilder {
 	static func build() -> UIViewController {
 		let interactor = SearchScreenInteractor()
 		let router = SearchScreenRouter()

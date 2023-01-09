@@ -8,11 +8,11 @@
 import UIKit
 
 // MARK: - MiniAppsScreenPresenterProtocol
-protocol MiniAppsScreenPresenterProtocol: AnyObject {
+protocol MiniAppsScreenPresenterProtocol: AnyObject, MiniaAppCollectionAdapterDelegate {
 }
 
 // MARK: - MiniAppsScreenPresenter
-class MiniAppsScreenPresenter: MiniAppsScreenPresenterProtocol {
+final class MiniAppsScreenPresenter: MiniAppsScreenPresenterProtocol {
 
     // MARK: Properties
     weak var view: MiniAppsScreenViewProtocol?
@@ -23,5 +23,15 @@ class MiniAppsScreenPresenter: MiniAppsScreenPresenterProtocol {
     init(interactor: MiniAppsScreenInteractorProtocol, router: MiniAppsScreenRouterProtocol) {
         self.router = router
         self.interactor = interactor
+    }
+}
+
+extension MiniAppsScreenPresenter: MiniaAppCollectionAdapterDelegate {
+    func showMessage() {
+        router.showMessageScreen(NSLocalizedString("miniapps.blank", comment: ""))
+    }
+    
+    func openGenealogy() {
+        router.openGenealogy()
     }
 }

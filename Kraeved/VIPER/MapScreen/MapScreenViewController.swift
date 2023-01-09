@@ -19,7 +19,6 @@ final class MapScreenViewController: BaseViewController, MapScreenViewProtocol {
     private struct UIConstants {
         static let addButtonSize: CGFloat = 64
         static let addButtonInset: CGFloat = 32
-        static let locationMarkSize: CGFloat = 16
     }
 
     // MARK: Properties
@@ -61,17 +60,8 @@ final class MapScreenViewController: BaseViewController, MapScreenViewProtocol {
         return view
     }()
 
-    private let annotationInfoView: MapScreenAnnotationInfoView = {
-        let view = MapScreenAnnotationInfoView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    var annotationAddingView: AnnotationAddingView = {
-        let view = AnnotationAddingView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    private let annotationInfoView = AnnotationInfoView()
+    var annotationAddingView = AnnotationAddingView()
 
     // MARK: Init
     init(presenter: MapScreenPresenterProtocol) {
@@ -88,14 +78,14 @@ final class MapScreenViewController: BaseViewController, MapScreenViewProtocol {
         super.viewDidLoad()
 
         initialize()
-
         presenter.viewDidLoad()
+        
         mapView.delegate = presenter
-
+        annotationInfoView.delegate = presenter
+        annotationAddingView.delegate = presenter
+        
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
             mapView.addGestureRecognizer(gestureRecognizer)
-        
-        annotationAddingView.delegate = presenter
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -200,18 +190,17 @@ final class MapScreenViewController: BaseViewController, MapScreenViewProtocol {
     }
     
     func showLoginAlert() {
-        let alertViewController = UIAlertController(title: nil, message: "Для добавления новых локаций необходимо выполнить вход или зарегистрироваться!", preferredStyle: .actionSheet)
-        let loginAction = UIAlertAction(title: "Войти", style: .default) { [weak self] _ in
+        let alertViewController = UIAlertController(title: nil, message: NSLocalizedString("mapScreen.needSignIn", comment: ""), preferredStyle: .actionSheet)
+        let loginAction = UIAlertAction(title: NSLocalizedString("common.signIn", comment: ""), style: .default) { [weak self] _ in
             self?.presenter.openLoginForm()
         }
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        let cancelAction = UIAlertAction(title: NSLocalizedString("common.cancel", comment: ""), style: .cancel)
         alertViewController.addAction(loginAction)
         alertViewController.addAction(cancelAction)
         navigationController?.present(alertViewController, animated: true)
     }
-
-    // MARK: Public Methods
-    @objc func handleTap(gestureRecognizer: UITapGestureRecognizer) {
+    
+    @objc private func handleTap(gestureRecognizer: UITapGestureRecognizer) {
         switch presenter.mode {
             case .addingAnnotation:
                 let location = gestureRecognizer.location(in: mapView)
@@ -220,7 +209,7 @@ final class MapScreenViewController: BaseViewController, MapScreenViewProtocol {
         }
     }
     
-    @objc func keyboardWillChangesVisibility(notification: NSNotification) {
+    @objc private func keyboardWillChangesVisibility(notification: NSNotification) {
         guard !isBottomPanelHidden else { return }
         var keyboardSize: CGSize?
         
@@ -247,7 +236,8 @@ final class MapScreenViewController: BaseViewController, MapScreenViewProtocol {
             }
         }
     }
-    
+
+    // MARK: Public Methods
     func showAnnotationInfo(entity: MetaObject<Entity>) {
         annotationInfoView.isHidden = false
         annotationAddingView.isHidden = true

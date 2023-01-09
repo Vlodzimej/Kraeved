@@ -6,7 +6,7 @@ protocol MainScreenPresenterProtocol: AnyObject {
 }
 
 // MARK: - MainScreenPresenter
-class MainScreenPresenter: NSObject, MainScreenPresenterProtocol {
+final class MainScreenPresenter: NSObject, MainScreenPresenterProtocol {
 
     private let adapter = MainTableAdapter()
 

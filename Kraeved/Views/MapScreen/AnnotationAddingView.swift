@@ -12,10 +12,12 @@ import MapKit
 // MARK: - AnnotationAddingMode
 enum AnnotationAddingMode {
     case location
+    case type
     case name
     case description
 }
 
+// MARK: - AnnotationAddingViewDelegate
 protocol AnnotationAddingViewDelegate: AnyObject {
     func addAnnotation(title: String, description: String)
 }
@@ -26,18 +28,33 @@ protocol AnnotationAddingViewProtocol: AnyObject {
 }
 
 // MARK: - AnnotationAddingView
-class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
+final class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
 
     // MARK: UIConstants
     struct UIConstants {
         static let fontSize: CGFloat = 16
+        static let locationLabelTopOffset: CGFloat = 64
+        static let coordsTextField: CGFloat = 14
+        static let descriptionTextInset: CGFloat = 8
+        static let nameLabelFontSize: CGFloat = 12
+        static let descriptionLabelFontSize: CGFloat = 12
+        static let nextButtonInset: CGFloat = 10
+        static let nextButtonFontSize: CGFloat = 18
+        static let nameTextFieldTopOffset: CGFloat = 48
+        static let descriptionTextTopOffset: CGFloat = 48
+        static let descriptionTextHeight: CGFloat = 112
+        static let desctiptionTextRadius: CGFloat = 8
+        static let nameLabelTopOffset: CGFloat = 8
+        static let descriptionLabelTopOffset: CGFloat = 8
     }
     
     // MARK: Properties
     private var mode: AnnotationAddingMode?
     weak var delegate: AnnotationAddingViewDelegate?
+    
+    private let typePickerAdapter = AnnotationTypePickerAdapter()
 
-    // MARK: UI Properties
+    // MARK: UIProperties
     private lazy var locationLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString("mapScreen.selectCoords", comment: "")
@@ -50,7 +67,7 @@ class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
     private lazy var coordsTextField: KTextField = {
         let textField = KTextField()
         textField.placeholder = NSLocalizedString("mapScreen.coordinates", comment: "")
-        textField.font = UIFont.systemFont(ofSize: 14)
+        textField.font = UIFont.systemFont(ofSize: UIConstants.coordsTextField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.textColor = .gray
         textField.textAlignment = .center
@@ -72,8 +89,9 @@ class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
         let textView = UITextView()
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = UIFont.systemFont(ofSize: UIConstants.fontSize, weight: .regular)
+        textView.layer.cornerRadius = UIConstants.desctiptionTextRadius
         textView.textColor = .gray
-        textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 0, right: 0)
+        textView.textContainerInset = UIEdgeInsets(top: UIConstants.descriptionTextInset, left: UIConstants.descriptionTextInset, bottom: 0, right: 0)
         textView.isHidden = true
         return textView
     }()
@@ -82,7 +100,7 @@ class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
         let label = UILabel()
         label.text = NSLocalizedString("mapScreen.enterNewLocationName", comment: "")
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: UIConstants.nameLabelFontSize, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         return label
@@ -92,7 +110,7 @@ class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
         let label = UILabel()
         label.text = NSLocalizedString("mapScreen.enterNewLocationDescription", comment: "")
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: UIConstants.descriptionLabelFontSize, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         return label
@@ -107,19 +125,25 @@ class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
         button.setImage(UIImage.Common.next, for: .normal)
         button.semanticContentAttribute = UIApplication.shared
             .userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: UIConstants.nextButtonInset, bottom: 0, right: 0)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: UIConstants.nextButtonFontSize)
         button.isEnabled = false
         button.addTarget(self, action: #selector(nextButtonTapped(_:)), for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var typePickerView: UIPickerView = {
+        let picker = UIPickerView()
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.isHidden = true
+        return picker
     }()
     
     // MARK: Init
     init() {
         super.init(frame: .zero)
         initialize()
-        backgroundColor = .clear
     }
 
     required init?(coder: NSCoder) {
@@ -128,15 +152,15 @@ class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
 
     // MARK: Private Methods
     private func initialize() {
+        translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = .clear
+        
+        typePickerAdapter.configurate(pickerView: typePickerView)
+        
         // TODO: Необходимо провести рефакторинг
-
-        addSubview(nextButton)
-        nextButton.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        nextButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.contentInset).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: 48).isActive = true
         
         addSubview(locationLabel)
-        locationLabel.topAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: Constants.contentInset).isActive = true
+        locationLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: UIConstants.locationLabelTopOffset).isActive = true
         locationLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         locationLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         
@@ -144,35 +168,46 @@ class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
         coordsTextField.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: Constants.contentInset).isActive = true
         coordsTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.contentInset).isActive = true
         coordsTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.contentInset).isActive = true
+        
+        addSubview(typePickerView)
+        typePickerView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        typePickerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.contentInset).isActive = true
+        typePickerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.contentInset).isActive = true
 
         addSubview(nameTextField)
-        nameTextField.topAnchor.constraint(equalTo: nextButton.bottomAnchor).isActive = true
+        nameTextField.topAnchor.constraint(equalTo: self.topAnchor, constant: UIConstants.nameTextFieldTopOffset).isActive = true
         nameTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.contentInset).isActive = true
         nameTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.contentInset).isActive = true
-        nameTextField.heightAnchor.constraint(equalToConstant: 48).isActive = true
+        nameTextField.heightAnchor.constraint(equalToConstant: Constants.buttonHeight).isActive = true
         
         addSubview(nameLabel)
-        nameLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 8).isActive = true
+        nameLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: UIConstants.nameLabelTopOffset).isActive = true
         nameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
 
         addSubview(descriptionTextView)
-        descriptionTextView.topAnchor.constraint(equalTo: nextButton.bottomAnchor).isActive = true
+        descriptionTextView.topAnchor.constraint(equalTo: self.topAnchor, constant: UIConstants.descriptionTextTopOffset).isActive = true
         descriptionTextView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: Constants.contentInset).isActive = true
         descriptionTextView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.contentInset).isActive = true
-        descriptionTextView.heightAnchor.constraint(equalToConstant: 128).isActive = true
+        descriptionTextView.heightAnchor.constraint(equalToConstant: UIConstants.descriptionTextHeight).isActive = true
         
         addSubview(descriptionLabel)
-        descriptionLabel.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: 8).isActive = true
+        descriptionLabel.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: UIConstants.descriptionLabelTopOffset).isActive = true
         descriptionLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        
+        addSubview(nextButton)
+        nextButton.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        nextButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -Constants.contentInset).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight).isActive = true
         
         update(mode: .location)
     }
     
-    // MARK: Public Methods
-    @objc func nextButtonTapped(_ sender: UIButton) {
+    @objc private func nextButtonTapped(_ sender: UIButton) {
         guard let mode else { return }
         switch mode {
             case .location:
+                update(mode: .type)
+            case .type:
                 update(mode: .name)
             case .name:
                 update(mode: .description)
@@ -181,11 +216,12 @@ class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
         }
     }
     
-    @objc func nameTextFieldDidChange(_ textField: UITextField) {
+    @objc private func nameTextFieldDidChange(_ textField: UITextField) {
         guard let text = textField.text else { return }
         nextButton.isEnabled = text.count > 2
     }
-
+    
+    // MARK: Public Methods
     func update(mode: AnnotationAddingMode) {
         // TODO: Необходимо провести рефакторинг
         self.mode = mode
@@ -200,12 +236,15 @@ class AnnotationAddingView: UIView, AnnotationAddingViewProtocol {
                 descriptionLabel.isHidden = true
                 coordsTextField.isHidden = false
                 coordsTextField.text = ""
-            case .name:
+            case .type:
                 locationLabel.isHidden = true
+                typePickerView.isHidden = false
+                coordsTextField.isHidden = true
+            case .name:
+                typePickerView.isHidden = true
                 nameTextField.isHidden = false
                 nameLabel.isHidden = false
                 nextButton.isEnabled = false
-                coordsTextField.isHidden = true
             case .description:
                 nameTextField.isHidden = true
                 nameLabel.isHidden = true

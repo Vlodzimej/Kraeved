@@ -4,6 +4,6 @@ protocol SearchScreenRouterProtocol: BaseRouterProtocol {
 
 }
 
-class SearchScreenRouter: BaseRouter<SearchScreenViewController>, SearchScreenRouterProtocol {
+final class SearchScreenRouter: BaseRouter<SearchScreenViewController>, SearchScreenRouterProtocol {
 
 }

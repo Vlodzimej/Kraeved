@@ -3,5 +3,5 @@ import Foundation
 protocol MainScreenRouterProtocol: BaseRouterProtocol {
 }
 
-class MainScreenRouter: BaseRouter<MainScreenViewController>, MainScreenRouterProtocol {
+final class MainScreenRouter: BaseRouter<MainScreenViewController>, MainScreenRouterProtocol {
 }

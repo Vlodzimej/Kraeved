@@ -20,7 +20,7 @@ enum EntityType: String, CaseIterable {
     }
 }
 
-struct Entity: Codable {
+struct Entity: Codable, Equatable {
     static let metaTypeId = MetaType.entity.id
     
     var imageUrl: String?
@@ -28,6 +28,30 @@ struct Entity: Codable {
     var typeId: UUID?
     var longitude: CLongDouble?
     var latitude: CLongDouble?
+    
+    static func == (lhs: Entity, rhs: Entity) -> Bool {
+        if lhs.imageUrl != lhs.imageUrl {
+            return false
+        }
+        
+        if lhs.text != rhs.text {
+            return false
+        }
+        
+        if lhs.typeId != rhs.typeId {
+            return false
+        }
+        
+        if lhs.longitude != rhs.longitude {
+            return false
+        }
+        
+        if lhs.latitude != rhs.latitude {
+            return false
+        }
+        
+        return true
+    }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)

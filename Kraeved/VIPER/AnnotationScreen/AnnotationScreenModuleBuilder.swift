@@ -1,6 +1,6 @@
 import UIKit
 
-class AnnotationScreenModuleBuilder {
+final class AnnotationScreenModuleBuilder {
     static func build(annotation: Annotation) -> UIViewController {
 		let interactor = AnnotationScreenInteractor()
 		let router = AnnotationScreenRouter()

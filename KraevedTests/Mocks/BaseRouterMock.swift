@@ -10,14 +10,35 @@ import Foundation
 
 class BaseRouterMock: MainScreenRouterProtocol {
 
-    var isOpenedAnnotation: Bool = false
-    var isOpenedEntityDetails: Bool = false
+    var isAnnotationOpened: Bool = false
+    var isEntityDetailsOpened: Bool = false
+    var isStartScreenOpened: Bool = false
+    var isAlertMessageShown: Bool = false
+    var isMessageScreenShown: Bool = false
+    var isDismissed: Bool = false
 
     func openAnnotation(annotation: Kraeved.Annotation) {
-        isOpenedAnnotation = true
+        isAnnotationOpened = true
     }
 
     func openEntityDetails(id: UUID) {
-        isOpenedEntityDetails = true
+        isEntityDetailsOpened = true
     }
+    
+    func openStartScreen(output: Kraeved.StartScreenModuleOutput?) {
+        isStartScreenOpened = true
+    }
+    
+    func showAlertMessage(_ message: String) {
+        isAlertMessageShown = true
+    }
+    
+    func showMessageScreen(_ message: String) {
+        isMessageScreenShown = true
+    }
+    
+    func dismiss() {
+        isDismissed = true
+    }
+    
 }

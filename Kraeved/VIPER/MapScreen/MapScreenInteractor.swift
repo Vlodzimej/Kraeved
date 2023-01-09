@@ -10,7 +10,7 @@ protocol MapScreenInteractorProtocol: AnyObject {
 }
 
 // MARK: - MapScreenInteractor
-class MapScreenInteractor: MapScreenInteractorProtocol {
+final class MapScreenInteractor: MapScreenInteractorProtocol {
 
     private let annotationManager: AnnotationManagerProtocol
     private let entityManager: EntityManagerProtocol
@@ -43,11 +43,8 @@ class MapScreenInteractor: MapScreenInteractorProtocol {
     }
 
     func getEntity(id: UUID, completion: @escaping (MetaObject<Entity>) -> Void) {
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let self = self else { return }
-            self.entityManager.get(id: id) { entities in
-                completion(entities)
-            }
+        self.entityManager.get(id: id) { entities in
+            completion(entities)
         }
     }
     

@@ -5,7 +5,7 @@ protocol AnnotationScreenInteractorProtocol: AnyObject {
 }
 
 // MARK: - AnnotationScreenInteractor
-class AnnotationScreenInteractor: AnnotationScreenInteractorProtocol {
+final class AnnotationScreenInteractor: AnnotationScreenInteractorProtocol {
 
     // MARK: Properties
     weak var presenter: AnnotationScreenPresenterProtocol?

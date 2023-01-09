@@ -16,7 +16,7 @@ protocol ProfileInteractorProtocol: AnyObject {
 }
 
 // MARK: - ProfileInteractor
-class ProfileInteractor: ProfileInteractorProtocol {
+final class ProfileInteractor: ProfileInteractorProtocol {
 
     // MARK: Properties
     weak var presenter: ProfilePresenterProtocol?

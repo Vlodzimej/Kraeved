@@ -18,7 +18,7 @@ protocol StartScreenPresenterProtocol: AnyObject, PhoneFormViewDelegate, CodeFor
 }
 
 // MARK: - StartScreenPresenter
-class StartScreenPresenter: StartScreenPresenterProtocol {
+final class StartScreenPresenter: StartScreenPresenterProtocol {
 
     // MARK: Properties
     weak var view: StartScreenViewProtocol?

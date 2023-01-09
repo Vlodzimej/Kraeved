@@ -7,24 +7,29 @@
 
 import UIKit
 
+// MARK: - ImageManagerProtocol
 protocol ImageManagerProtocol: AnyObject {
     func downloadImage(from url: URL, completion: @escaping (UIImage?) -> Void)
 }
 
-class ImageManager: ImageManagerProtocol {
+// MARK: - ImageManager
+final class ImageManager: ImageManagerProtocol {
 
     static let shared = ImageManager()
 
+    // MARK: Properties
     let urlCache = URLCache.shared
 
     private let apiManager: APIManagerProtocol
     private let coreDataManager: CoreDataManagerProtocol
 
+    // MARK: Init
     private init(apiManager: APIManagerProtocol = APIManager.shared, coreDataManager: CoreDataManagerProtocol = CoreDataManager.shared) {
         self.apiManager = apiManager
         self.coreDataManager = coreDataManager
     }
 
+    // MARK: Public Methods
     // Функция получения и кэширования изображений в CoreData
     func downloadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
         let result = coreDataManager.find(entityName: "ImageCoreModel", predicates: [NSPredicate(format: "%K = %@", "imageUrl", url.absoluteString)])

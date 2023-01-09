@@ -16,7 +16,7 @@ protocol ProfilePresenterProtocol: AnyObject, ProfileTableAdapterDelegate, Start
 }
 
 // MARK: - ProfilePresenter
-class ProfilePresenter: ProfilePresenterProtocol {
+final class ProfilePresenter: ProfilePresenterProtocol {
 
     // MARK: Properties
     weak var view: ProfileViewProtocol?
